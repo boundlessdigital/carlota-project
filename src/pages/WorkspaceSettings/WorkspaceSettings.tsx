@@ -26,6 +26,7 @@ import {
   Refresh as RefreshIcon,
 } from '@mui/icons-material';
 import { timezones } from './timezones';
+import { Breadcrumb } from '../../components/Breadcrumb';
 
 export const WorkspaceSettings = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -86,6 +87,7 @@ export const WorkspaceSettings = () => {
 
   return (
     <Box sx={{ width: '100%', maxWidth: 800 }}>
+      <Breadcrumb />
       <Typography 
         variant="h4" 
         gutterBottom 

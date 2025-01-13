@@ -26,6 +26,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
+import { Breadcrumb } from '../../components/Breadcrumb';
 import { BillingData, ChartType } from './types';
 
 // Mock data - replace with actual API call
@@ -68,6 +69,7 @@ export const BillingTracking = () => {
 
   return (
     <Box sx={{ width: '100%', maxWidth: 1200 }}>
+      <Breadcrumb />
       <Typography 
         variant="h4" 
         gutterBottom 
