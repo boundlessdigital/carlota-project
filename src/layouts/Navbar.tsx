@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, IconButton, Menu, MenuItem, Box } from '@mui/material'
+import { AppBar, Toolbar, IconButton, Menu, MenuItem, Box, Button, Divider } from '@mui/material'
 import { Settings as SettingsIcon } from '@mui/icons-material'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
@@ -12,6 +12,11 @@ export const Navbar = () => {
 
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const handleWorkspaceClick = () => {
+    // TODO: Implement workspace selection functionality
+    console.log('Workspace clicked')
   }
 
   return (
@@ -39,58 +44,86 @@ export const Navbar = () => {
           />
         </Link>
 
-        <IconButton
-          size="large"
-          aria-label="settings"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          onClick={handleMenu}
-          color="inherit"
-          sx={{
-            width: 40,
-            height: 40,
-            '&:hover': {
-              bgcolor: 'rgba(255, 255, 255, 0.1)'
-            }
-          }}
-        >
-          <SettingsIcon sx={{ fontSize: 24 }} />
-        </IconButton>
-        <Menu
-          id="menu-appbar"
-          anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right'
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right'
-          }}
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-          PaperProps={{
-            sx: {
-              mt: 1,
-              minWidth: 200
-            }
-          }}
-        >
-          <MenuItem
-            component={Link}
-            to="/workspace-settings"
-            onClick={handleClose}
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Button
+            onClick={handleWorkspaceClick}
+            sx={{
+              color: 'white',
+              textTransform: 'none',
+              fontSize: '1rem',
+              fontWeight: 500,
+              mr: 2,
+              '&:hover': {
+                bgcolor: 'rgba(255, 255, 255, 0.1)'
+              }
+            }}
           >
-            Workspace Settings
-          </MenuItem>
-          <MenuItem component={Link} to="/billing" onClick={handleClose}>
-            Billing Tracking
-          </MenuItem>
-          <MenuItem component={Link} to="/subscription" onClick={handleClose}>
-            Subscription
-          </MenuItem>
-        </Menu>
+            My Workspace
+          </Button>
+
+          <Divider 
+            orientation="vertical" 
+            flexItem 
+            sx={{ 
+              bgcolor: 'rgba(255, 255, 255, 0.2)',
+              height: 24,
+              mr: 2
+            }} 
+          />
+
+          <IconButton
+            size="large"
+            aria-label="settings"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleMenu}
+            color="inherit"
+            sx={{
+              width: 40,
+              height: 40,
+              '&:hover': {
+                bgcolor: 'rgba(255, 255, 255, 0.1)'
+              }
+            }}
+          >
+            <SettingsIcon sx={{ fontSize: 24 }} />
+          </IconButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right'
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right'
+            }}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+            PaperProps={{
+              sx: {
+                mt: 1,
+                minWidth: 200
+              }
+            }}
+          >
+            <MenuItem
+              component={Link}
+              to="/workspace-settings"
+              onClick={handleClose}
+            >
+              Workspace Settings
+            </MenuItem>
+            <MenuItem component={Link} to="/billing" onClick={handleClose}>
+              Billing Tracking
+            </MenuItem>
+            <MenuItem component={Link} to="/subscription" onClick={handleClose}>
+              Subscription
+            </MenuItem>
+          </Menu>
+        </Box>
       </Toolbar>
     </AppBar>
   )

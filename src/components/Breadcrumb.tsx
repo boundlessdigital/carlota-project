@@ -4,7 +4,7 @@ import { NavigateNext as NavigateNextIcon } from '@mui/icons-material';
 
 const pathToTitle: Record<string, string> = {
   'workspace-settings': 'Workspace Settings',
-  'billing-tracking': 'Billing Tracking',
+  'billing': 'Billing Tracking',
   'subscription': 'Subscription',
 };
 
