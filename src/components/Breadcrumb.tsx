@@ -1,5 +1,6 @@
-import { Breadcrumb as ChakraBreadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
+import { Box, Typography, Link as MuiLink, Breadcrumbs } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
+import { NavigateNext as NavigateNextIcon } from '@mui/icons-material';
 
 const pathToTitle: Record<string, string> = {
   'workspace-settings': 'Workspace Settings',
@@ -12,19 +13,44 @@ export const Breadcrumb = () => {
   const pathSegments = location.pathname.split('/').filter(Boolean);
 
   return (
-    <ChakraBreadcrumb mb={6} color="gray.600">
-      <BreadcrumbItem>
-        <BreadcrumbLink as={Link} to="/">
+    <Box sx={{ mb: 3 }}>
+      <Breadcrumbs 
+        separator={<NavigateNextIcon fontSize="small" />} 
+        aria-label="breadcrumb"
+      >
+        <MuiLink
+          component={Link}
+          to="/"
+          color="text.secondary"
+          sx={{ 
+            textDecoration: 'none',
+            '&:hover': {
+              textDecoration: 'underline'
+            }
+          }}
+        >
           Home
-        </BreadcrumbLink>
-      </BreadcrumbItem>
-      {pathSegments.map((segment, index) => (
-        <BreadcrumbItem key={segment} isCurrentPage={index === pathSegments.length - 1}>
-          <BreadcrumbLink as={Link} to={`/${segment}`}>
-            {pathToTitle[segment] || segment}
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-      ))}
-    </ChakraBreadcrumb>
+        </MuiLink>
+        {pathSegments.map((segment, index) => {
+          const isLast = index === pathSegments.length - 1;
+          return (
+            <Typography
+              key={segment}
+              color={isLast ? 'text.primary' : 'text.secondary'}
+              component={isLast ? 'span' : Link}
+              to={isLast ? undefined : `/${segment}`}
+              sx={!isLast ? { 
+                textDecoration: 'none',
+                '&:hover': {
+                  textDecoration: 'underline'
+                }
+              } : undefined}
+            >
+              {pathToTitle[segment] || segment}
+            </Typography>
+          );
+        })}
+      </Breadcrumbs>
+    </Box>
   );
 };

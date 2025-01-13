@@ -12,7 +12,6 @@ import {
   Alert,
   Snackbar,
 } from '@mui/material';
-import { Breadcrumb } from '../../components/Breadcrumb';
 import { PlanCard } from './PlanCard';
 import { SubscriptionPlan, PlanType } from './types';
 
@@ -107,7 +106,6 @@ export const Subscription = () => {
 
   return (
     <Box sx={{ width: '100%', maxWidth: 1200 }}>
-      <Breadcrumb />
       <Typography 
         variant="h4" 
         gutterBottom 
