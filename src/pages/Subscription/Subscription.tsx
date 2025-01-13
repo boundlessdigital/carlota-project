@@ -1,5 +1,17 @@
 import { useState, useRef } from 'react';
-import * as Chakra from '@chakra-ui/react';
+import {
+  Box,
+  Typography,
+  Grid,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+  Alert,
+  Snackbar,
+} from '@mui/material';
 import { Breadcrumb } from '../../components/Breadcrumb';
 import { PlanCard } from './PlanCard';
 import { SubscriptionPlan, PlanType } from './types';
@@ -57,84 +69,112 @@ export const Subscription = () => {
   const [currentPlan] = useState<PlanType>('Pro');
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const cancelRef = useRef<HTMLButtonElement>(null);
-  const toast = Chakra.useToast();
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'info' | 'warning' | 'error';
+  }>({
+    open: false,
+    message: '',
+    severity: 'info',
+  });
 
   const handlePlanSelect = (planId: string) => {
     if (planId === 'pro') {
       setSelectedPlan(planId);
       setIsConfirmOpen(true);
     } else {
-      // For demo purposes, show a message for other plans
-      toast({
-        title: 'Feature Coming Soon',
-        description: 'This subscription plan will be available soon.',
-        status: 'info',
-        duration: 5000,
-        isClosable: true,
+      setSnackbar({
+        open: true,
+        message: 'This subscription plan will be available soon.',
+        severity: 'info',
       });
     }
   };
 
   const handleConfirm = () => {
     setIsConfirmOpen(false);
-    // Here you would typically make an API call to update the subscription
-    toast({
-      title: 'Plan Updated',
-      description: 'Your subscription has been updated successfully.',
-      status: 'success',
-      duration: 5000,
-      isClosable: true,
+    setSnackbar({
+      open: true,
+      message: 'Your subscription has been updated successfully.',
+      severity: 'success',
     });
   };
 
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   return (
-    <Chakra.Box>
+    <Box sx={{ width: '100%', maxWidth: 1200 }}>
       <Breadcrumb />
-      <Chakra.Heading size="lg" mb={2} color="black">
+      <Typography 
+        variant="h4" 
+        gutterBottom 
+        sx={{ 
+          fontSize: { xs: '1.75rem', sm: '2rem', md: '2.25rem' },
+          fontWeight: 600,
+          mb: 1
+        }}
+      >
         Subscription Plans
-      </Chakra.Heading>
-      <Chakra.Text mb={6} color="gray.600">
+      </Typography>
+      <Typography 
+        variant="body1" 
+        sx={{ 
+          color: 'text.secondary',
+          mb: 4,
+          fontSize: { xs: '1rem', sm: '1.1rem' }
+        }}
+      >
         Choose the plan that best fits your needs
-      </Chakra.Text>
+      </Typography>
 
-      <Chakra.SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
+      <Grid container spacing={3}>
         {subscriptionPlans.map((plan) => (
-          <PlanCard
-            key={plan.id}
-            plan={plan}
-            isActive={currentPlan === plan.name}
-            onSelect={handlePlanSelect}
-          />
+          <Grid item xs={12} md={6} lg={4} key={plan.id}>
+            <PlanCard
+              plan={plan}
+              isCurrentPlan={currentPlan.toLowerCase() === plan.id}
+              onSelect={handlePlanSelect}
+            />
+          </Grid>
         ))}
-      </Chakra.SimpleGrid>
+      </Grid>
 
-      <Chakra.AlertDialog
-        isOpen={isConfirmOpen}
-        leastDestructiveRef={cancelRef}
+      <Dialog
+        open={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
       >
-        <Chakra.AlertDialogOverlay>
-          <Chakra.AlertDialogContent>
-            <Chakra.AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Confirm Subscription Change
-            </Chakra.AlertDialogHeader>
+        <DialogTitle>Confirm Subscription Change</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to change your subscription plan? This will take effect immediately.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsConfirmOpen(false)}>Cancel</Button>
+          <Button onClick={handleConfirm} variant="contained" autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-            <Chakra.AlertDialogBody>
-              Are you sure you want to change your subscription plan? This will affect your billing immediately.
-            </Chakra.AlertDialogBody>
-
-            <Chakra.AlertDialogFooter>
-              <Chakra.Button ref={cancelRef} onClick={() => setIsConfirmOpen(false)}>
-                Cancel
-              </Chakra.Button>
-              <Chakra.Button colorScheme="blue" onClick={handleConfirm} ml={3}>
-                Confirm
-              </Chakra.Button>
-            </Chakra.AlertDialogFooter>
-          </Chakra.AlertDialogContent>
-        </Chakra.AlertDialogOverlay>
-      </Chakra.AlertDialog>
-    </Chakra.Box>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={5000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert 
+          onClose={handleCloseSnackbar} 
+          severity={snackbar.severity}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </Box>
   );
 };

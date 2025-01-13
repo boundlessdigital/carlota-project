@@ -19,8 +19,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         top: 0,
         left: 0,
         right: 0,
-        bottom: 0,
-        overflow: 'hidden'
+        bottom: 0
       }}
     >
       <Navbar />
@@ -28,9 +27,11 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         sx={{
           flex: 1,
           py: 4,
-          px: { xs: 2, sm: 3, md: 4 },
+          pl: { xs: 4, sm: 6, md: 8 },
+          pr: { xs: 3, sm: 4 },
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          alignItems: 'flex-start'
         }}
       >
         {children}

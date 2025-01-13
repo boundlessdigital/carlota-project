@@ -1,88 +1,153 @@
-import * as Chakra from '@chakra-ui/react';
-import { FiCheck, FiX } from 'react-icons/fi';
+import {
+  Box,
+  Typography,
+  Button,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Chip,
+  Paper,
+  Stack,
+} from '@mui/material';
+import { Check as CheckIcon, Close as CloseIcon } from '@mui/icons-material';
 import { SubscriptionPlan } from './types';
 
 interface PlanCardProps {
   plan: SubscriptionPlan;
-  isActive: boolean;
+  isCurrentPlan: boolean;
   onSelect: (planId: string) => void;
 }
 
-export const PlanCard = ({ plan, isActive, onSelect }: PlanCardProps) => {
+export const PlanCard = ({ plan, isCurrentPlan, onSelect }: PlanCardProps) => {
   return (
-    <Chakra.Box
-      borderWidth="1px"
-      borderColor={isActive ? '#0D1B3F' : 'gray.200'}
-      borderRadius="lg"
-      p={6}
-      bg="white"
-      position="relative"
-      transition="all 0.2s"
-      _hover={{
-        transform: 'translateY(-4px)',
-        boxShadow: 'lg',
+    <Paper
+      elevation={1}
+      sx={{
+        position: 'relative',
+        p: 3,
+        height: '100%',
+        borderRadius: 2,
+        border: (theme) => `1px solid ${isCurrentPlan ? theme.palette.primary.main : theme.palette.divider}`,
+        transition: 'all 0.2s',
+        '&:hover': {
+          transform: 'translateY(-4px)',
+          boxShadow: (theme) => theme.shadows[4],
+        },
       }}
     >
       {plan.isPopular && (
-        <Chakra.Badge
-          colorScheme="blue"
-          position="absolute"
-          top="-2"
-          right="4"
-          fontSize="sm"
-        >
-          Most Popular
-        </Chakra.Badge>
+        <Chip
+          label="Most Popular"
+          color="primary"
+          size="small"
+          sx={{
+            position: 'absolute',
+            top: -10,
+            right: 16,
+          }}
+        />
       )}
 
-      <Chakra.VStack spacing={4} align="stretch">
-        <Chakra.Box>
-          <Chakra.Heading size="md" mb={2}>
+      <Stack spacing={3}>
+        <Box>
+          <Typography 
+            variant="h6" 
+            gutterBottom 
+            sx={{ 
+              fontWeight: 600,
+              fontSize: '1.25rem'
+            }}
+          >
             {plan.name}
-          </Chakra.Heading>
-          <Chakra.Text color="gray.600" fontSize="sm" minHeight="40px">
+          </Typography>
+          <Typography 
+            variant="body2" 
+            color="text.secondary"
+            sx={{ 
+              minHeight: 48,
+              fontSize: '0.95rem'
+            }}
+          >
             {plan.description}
-          </Chakra.Text>
-        </Chakra.Box>
+          </Typography>
+        </Box>
 
-        <Chakra.Box>
-          <Chakra.Text fontSize="2xl" fontWeight="bold">
+        <Box>
+          <Typography 
+            variant="h4" 
+            sx={{ 
+              fontWeight: 700,
+              fontSize: '2rem'
+            }}
+          >
             {plan.price}
-          </Chakra.Text>
-          <Chakra.Text color="gray.600" fontSize="sm">
+          </Typography>
+          <Typography 
+            variant="body2" 
+            color="text.secondary"
+            sx={{ fontSize: '0.9rem' }}
+          >
             {plan.billingPeriod}
-          </Chakra.Text>
-        </Chakra.Box>
+          </Typography>
+        </Box>
 
-        <Chakra.List spacing={3}>
+        <List sx={{ py: 2 }}>
           {plan.features.map((feature, index) => (
-            <Chakra.ListItem key={index} display="flex" alignItems="center">
-              <Chakra.ListIcon
-                as={feature.included ? FiCheck : FiX}
-                color={feature.included ? 'green.500' : 'red.500'}
-              />
-              <Chakra.Text fontSize="sm">
-                {feature.name}
-                {feature.limit && (
-                  <Chakra.Text as="span" color="gray.600">
-                    {' '}
-                    ({feature.limit})
-                  </Chakra.Text>
+            <ListItem 
+              key={index} 
+              sx={{ 
+                px: 0,
+                py: 0.5
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 32 }}>
+                {feature.included ? (
+                  <CheckIcon 
+                    fontSize="small" 
+                    sx={{ color: 'success.main' }}
+                  />
+                ) : (
+                  <CloseIcon 
+                    fontSize="small"
+                    sx={{ color: 'error.main' }}
+                  />
                 )}
-              </Chakra.Text>
-            </Chakra.ListItem>
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  <Typography variant="body2" sx={{ fontSize: '0.95rem' }}>
+                    {feature.name}
+                    {feature.limit && (
+                      <Typography 
+                        component="span" 
+                        variant="body2" 
+                        color="text.secondary"
+                        sx={{ ml: 0.5 }}
+                      >
+                        ({feature.limit})
+                      </Typography>
+                    )}
+                  </Typography>
+                }
+              />
+            </ListItem>
           ))}
-        </Chakra.List>
+        </List>
 
-        <Chakra.Button
-          colorScheme={isActive ? 'gray' : 'blue'}
-          variant={isActive ? 'outline' : 'solid'}
+        <Button
+          variant={isCurrentPlan ? 'outlined' : 'contained'}
           onClick={() => onSelect(plan.id)}
-          mt={4}
+          sx={{ 
+            mt: 'auto',
+            py: 1.5,
+            textTransform: 'none',
+            fontSize: '1rem'
+          }}
         >
-          {isActive ? 'Current Plan' : 'Select Plan'}
-        </Chakra.Button>
-      </Chakra.VStack>
-    </Chakra.Box>
+          {isCurrentPlan ? 'Current Plan' : 'Select Plan'}
+        </Button>
+      </Stack>
+    </Paper>
   );
 };

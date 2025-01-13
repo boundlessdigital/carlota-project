@@ -48,6 +48,41 @@ const theme = createTheme({
           boxShadow: 'none'
         }
       }
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          textAlign: 'left'
+        }
+      }
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          textAlign: 'left'
+        }
+      }
+    },
+    MuiSelect: {
+      styleOverrides: {
+        select: {
+          textAlign: 'left'
+        }
+      }
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          textAlign: 'left'
+        }
+      }
+    },
+    MuiFormControl: {
+      styleOverrides: {
+        root: {
+          alignItems: 'flex-start'
+        }
+      }
     }
   }
 });

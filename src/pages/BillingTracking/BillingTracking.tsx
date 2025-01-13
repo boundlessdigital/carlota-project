@@ -1,5 +1,20 @@
 import { useState } from 'react';
-import * as Chakra from '@chakra-ui/react';
+import {
+  Box,
+  Typography,
+  Select,
+  MenuItem,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  FormControl,
+  SelectChangeEvent,
+} from '@mui/material';
 import {
   BarChart,
   Bar,
@@ -11,8 +26,6 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { Card } from '../../components/Card';
-import { Breadcrumb } from '../../components/Breadcrumb';
 import { BillingData, ChartType } from './types';
 
 // Mock data - replace with actual API call
@@ -54,51 +67,66 @@ export const BillingTracking = () => {
   };
 
   return (
-    <Chakra.Box>
-      <Breadcrumb />
-      <Chakra.Heading size="lg" mb={2} color="black">
+    <Box sx={{ width: '100%', maxWidth: 1200 }}>
+      <Typography 
+        variant="h4" 
+        gutterBottom 
+        sx={{ 
+          fontSize: { xs: '1.75rem', sm: '2rem', md: '2.25rem' },
+          fontWeight: 600,
+          mb: 1
+        }}
+      >
         Billing Tracking
-      </Chakra.Heading>
-      <Chakra.Text mb={6} color="gray.600">
+      </Typography>
+      <Typography 
+        variant="body1" 
+        sx={{ 
+          color: 'text.secondary',
+          mb: 4,
+          fontSize: { xs: '1rem', sm: '1.1rem' }
+        }}
+      >
         Monitor your workspace's monthly billing consumption
-      </Chakra.Text>
+      </Typography>
 
-      <Card mb={6}>
-        <Chakra.HStack mb={4} justify="flex-end">
-          <Chakra.Select
-            value={chartType}
-            onChange={(e) => setChartType(e.target.value as ChartType)}
-            width="auto"
-          >
-            <option value="bar">Bar Chart</option>
-            <option value="line">Line Chart</option>
-          </Chakra.Select>
-        </Chakra.HStack>
+      <Paper sx={{ p: 3, mb: 3 }} elevation={1}>
+        <Stack direction="row" spacing={2} alignItems="center" justifyContent="flex-end" sx={{ mb: 3 }}>
+          <FormControl size="small" sx={{ minWidth: 120 }}>
+            <Select
+              value={chartType}
+              onChange={(e: SelectChangeEvent) => setChartType(e.target.value as ChartType)}
+            >
+              <MenuItem value="bar">Bar Chart</MenuItem>
+              <MenuItem value="line">Line Chart</MenuItem>
+            </Select>
+          </FormControl>
+        </Stack>
         {renderChart()}
-      </Card>
+      </Paper>
 
-      <Card>
-        <Chakra.TableContainer>
-          <Chakra.Table variant="simple">
-            <Chakra.Thead>
-              <Chakra.Tr>
-                <Chakra.Th>Month</Chakra.Th>
-                <Chakra.Th isNumeric>Cost</Chakra.Th>
-                <Chakra.Th>Description</Chakra.Th>
-              </Chakra.Tr>
-            </Chakra.Thead>
-            <Chakra.Tbody>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }} elevation={1}>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Month</TableCell>
+                <TableCell align="right">Cost</TableCell>
+                <TableCell>Description</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {mockBillingData.map((data) => (
-                <Chakra.Tr key={data.month}>
-                  <Chakra.Td>{data.month}</Chakra.Td>
-                  <Chakra.Td isNumeric>${data.cost.toLocaleString()}</Chakra.Td>
-                  <Chakra.Td>{data.description}</Chakra.Td>
-                </Chakra.Tr>
+                <TableRow key={data.month}>
+                  <TableCell>{data.month}</TableCell>
+                  <TableCell align="right">${data.cost.toLocaleString()}</TableCell>
+                  <TableCell>{data.description}</TableCell>
+                </TableRow>
               ))}
-            </Chakra.Tbody>
-          </Chakra.Table>
-        </Chakra.TableContainer>
-      </Card>
-    </Chakra.Box>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+    </Box>
   );
 };

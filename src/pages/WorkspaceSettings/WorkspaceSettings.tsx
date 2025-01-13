@@ -85,18 +85,26 @@ export const WorkspaceSettings = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 800, width: '100%', mx: 'auto' }}>
-      <Typography variant="h4" gutterBottom sx={{ 
-        fontSize: { xs: '1.75rem', sm: '2rem', md: '2.25rem' },
-        fontWeight: 600,
-      }}>
+    <Box sx={{ width: '100%', maxWidth: 800 }}>
+      <Typography 
+        variant="h4" 
+        gutterBottom 
+        sx={{ 
+          fontSize: { xs: '1.75rem', sm: '2rem', md: '2.25rem' },
+          fontWeight: 600,
+          textAlign: 'left'
+        }}
+      >
         Workspace Settings
       </Typography>
       <Typography 
         variant="body1" 
         color="text.secondary" 
         paragraph
-        sx={{ fontSize: { xs: '1rem', sm: '1.1rem' } }}
+        sx={{ 
+          fontSize: { xs: '1rem', sm: '1.1rem' },
+          textAlign: 'left'
+        }}
       >
         Manage your workspace configuration and preferences
       </Typography>
@@ -110,25 +118,44 @@ export const WorkspaceSettings = () => {
           borderRadius: 2,
         }}
       >
-        <Stack spacing={4}>
+        <Stack spacing={4} sx={{ alignItems: 'flex-start', width: '100%' }}>
           <TextField
             label="Workspace Name"
             value={workspaceData.name}
             onChange={(e) => setWorkspaceData({ ...workspaceData, name: e.target.value })}
             fullWidth
             required
-            sx={{ '& .MuiInputBase-input': { fontSize: '1.1rem' } }}
+            sx={{ 
+              '& .MuiInputBase-input': { 
+                fontSize: '1.1rem',
+                textAlign: 'left'
+              }
+            }}
           />
 
           <FormControl fullWidth required>
-            <InputLabel>Timezone</InputLabel>
+            <InputLabel sx={{ textAlign: 'left' }}>Timezone</InputLabel>
             <Select
               value={workspaceData.timezone}
               label="Timezone"
               onChange={(e: SelectChangeEvent) => 
                 setWorkspaceData({ ...workspaceData, timezone: e.target.value })
               }
-              sx={{ '& .MuiInputBase-input': { fontSize: '1.1rem' } }}
+              sx={{ 
+                '& .MuiInputBase-input': { 
+                  fontSize: '1.1rem',
+                  textAlign: 'left'
+                }
+              }}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    '& .MuiMenuItem-root': {
+                      textAlign: 'left'
+                    }
+                  }
+                }
+              }}
             >
               {timezones.map((tz) => (
                 <MenuItem key={tz.value} value={tz.value}>
@@ -138,35 +165,47 @@ export const WorkspaceSettings = () => {
             </Select>
           </FormControl>
 
-          <Box sx={{ py: 2 }}>
-            <Typography variant="subtitle1" gutterBottom>
+          <FormControl fullWidth>
+            <InputLabel 
+              sx={{ 
+                position: 'static', 
+                transform: 'none',
+                mb: 1,
+                fontSize: '1.1rem',
+                '&.Mui-focused': {
+                  color: 'rgba(0, 0, 0, 0.87)'
+                }
+              }}
+            >
               Workspace Logo
-            </Typography>
+            </InputLabel>
             
-            {workspaceData.logoPreview ? (
-              <Box sx={{ 
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                gap: 2,
-              }}>
-                <Box sx={{ 
-                  position: 'relative',
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  borderRadius: 1,
-                  p: 2,
-                  bgcolor: '#f5f5f5',
-                  width: 'fit-content'
-                }}>
+            <Box sx={{ 
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: 1,
+              bgcolor: '#f5f5f5',
+              width: '100%',
+              minHeight: 200,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+              mb: 2
+            }}>
+              {workspaceData.logoPreview ? (
+                <>
                   <Box
                     component="img"
                     src={workspaceData.logoPreview}
                     alt="Workspace Logo"
                     sx={{ 
-                      height: 120,
+                      maxHeight: 160,
+                      maxWidth: '100%',
+                      objectFit: 'contain',
                       transform: `scale(${zoom / 100})`,
-                      transformOrigin: 'top left',
+                      transformOrigin: 'center',
                       transition: 'transform 0.2s',
                     }}
                   />
@@ -199,68 +238,103 @@ export const WorkspaceSettings = () => {
                       </IconButton>
                     </Tooltip>
                   </Stack>
-                </Box>
-
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <Tooltip title="Zoom Out">
-                    <IconButton onClick={handleZoomOut} disabled={zoom <= 50}>
-                      <ZoomOutIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Typography variant="body2" sx={{ minWidth: 60 }}>
-                    {zoom}%
-                  </Typography>
-                  <Tooltip title="Zoom In">
-                    <IconButton onClick={handleZoomIn} disabled={zoom >= 200}>
-                      <ZoomInIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Reset Zoom">
-                    <IconButton onClick={handleResetZoom} disabled={zoom === 100}>
-                      <RefreshIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Stack>
-              </Box>
-            ) : (
-              <>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleLogoChange}
-                  style={{ display: 'none' }}
-                  id="logo-upload"
-                />
-                <label htmlFor="logo-upload">
-                  <Button 
-                    variant="outlined" 
-                    component="span"
-                    size="large"
-                    sx={{ 
-                      minWidth: 180,
-                      height: 48,
-                      fontSize: '1rem'
+                  <Stack 
+                    direction="row" 
+                    spacing={1} 
+                    alignItems="center"
+                    sx={{
+                      position: 'absolute',
+                      bottom: 8,
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      bgcolor: 'rgba(255, 255, 255, 0.9)',
+                      borderRadius: 1,
+                      p: 0.5,
                     }}
                   >
-                    Upload Logo
-                  </Button>
-                </label>
-              </>
-            )}
-            <Typography 
-              variant="caption" 
-              display="block" 
-              sx={{ 
-                mt: 1.5, 
-                color: 'text.secondary',
-                fontSize: '0.9rem'
-              }}
-            >
-              Recommended size: 200x200px. Max file size: 2MB
-            </Typography>
-          </Box>
+                    <Tooltip title="Zoom Out">
+                      <IconButton 
+                        size="small" 
+                        onClick={handleZoomOut} 
+                        disabled={zoom <= 50}
+                      >
+                        <ZoomOutIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    <Typography variant="body2" sx={{ minWidth: 45, textAlign: 'center' }}>
+                      {zoom}%
+                    </Typography>
+                    <Tooltip title="Zoom In">
+                      <IconButton 
+                        size="small" 
+                        onClick={handleZoomIn} 
+                        disabled={zoom >= 200}
+                      >
+                        <ZoomInIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Reset Zoom">
+                      <IconButton 
+                        size="small" 
+                        onClick={handleResetZoom} 
+                        disabled={zoom === 100}
+                      >
+                        <RefreshIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  </Stack>
+                </>
+              ) : (
+                <Typography 
+                  variant="body1" 
+                  color="text.secondary"
+                  sx={{ mb: 2 }}
+                >
+                  No logo
+                </Typography>
+              )}
+            </Box>
 
-          <Box sx={{ mt: 2 }}>
+            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleLogoChange}
+                style={{ display: 'none' }}
+                id="logo-upload"
+              />
+              <label htmlFor="logo-upload">
+                <Button 
+                  variant="outlined" 
+                  component="span"
+                  size="large"
+                  sx={{ 
+                    minWidth: 180,
+                    height: 48,
+                    fontSize: '1rem'
+                  }}
+                >
+                  Upload Logo
+                </Button>
+              </label>
+              <Typography 
+                variant="caption"
+                sx={{ 
+                  color: 'text.secondary',
+                  fontSize: '0.9rem'
+                }}
+              >
+                Recommended size: 200x200px. Max file size: 2MB
+              </Typography>
+            </Box>
+          </FormControl>
+
+          <Box sx={{ 
+            mt: 2,
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'flex-end'
+          }}>
             <Button
               type="submit"
               variant="contained"
@@ -284,14 +358,14 @@ export const WorkspaceSettings = () => {
         maxWidth="md"
         fullWidth
       >
-        <DialogTitle>
+        <DialogTitle sx={{ textAlign: 'left' }}>
           Logo Preview
         </DialogTitle>
         <DialogContent>
           <Box sx={{ 
             display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
             py: 2
           }}>
             <Box
@@ -306,7 +380,7 @@ export const WorkspaceSettings = () => {
             />
           </Box>
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ justifyContent: 'flex-start', px: 3, pb: 2 }}>
           <Button onClick={() => setIsLogoDialogOpen(false)}>
             Close
           </Button>
