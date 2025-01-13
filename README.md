@@ -1,50 +1,74 @@
-# React + TypeScript + Vite
+# Carlota Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React application built with Material UI, featuring workspace settings management, billing tracking, and subscription plans. This project demonstrates best practices in React development, modern UI/UX design, and efficient state management.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Workspace Settings**: Manage workspace configurations and API access
+- **Billing Tracking**: Monitor costs and usage analytics
+- **Subscription Management**: Handle different subscription plans and tiers
+- **Modern UI**: Built with Material UI components and custom styling
+- **Responsive Design**: Fully responsive layout for all screen sizes
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- React 18
+- TypeScript
+- Vite
+- Material UI
+- React Router
+- Recharts (for data visualization)
 
-- Configure the top-level `parserOptions` property like this:
+## 🏗️ Project Structure
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+carlota-project/
+├── src/
+│   ├── components/      # Reusable UI components
+│   ├── layouts/         # Layout components (Navbar, etc.)
+│   ├── pages/          # Page components
+│   │   ├── BillingTracking/
+│   │   ├── Subscription/
+│   │   └── WorkspaceSettings/
+│   └── App.tsx         # Main application component
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 📥 Installation
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+1. Clone the repository:
+```bash
+git clone https://github.com/boundlessdigital/carlota-project.git
+cd carlota-project
 ```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+## 🚀 Deployment
+
+This project is automatically deployed to GitHub Pages using GitHub Actions. Any push to the main branch will trigger a new deployment.
+
+You can view the live site at: https://boundlessdigital.github.io/carlota-project/
+
+## 📖 Development History
+
+To understand how this project was built step by step, check out our [PROMPTS.md](PROMPTS.md) file, which documents the development process and decisions made along the way.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
